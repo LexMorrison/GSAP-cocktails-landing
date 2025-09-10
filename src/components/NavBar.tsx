@@ -8,10 +8,10 @@ const NavBar = () => {
     const navTween = gsap.timeline({
       scrollTrigger: {
         trigger: "nav",
-        start: "bottom top", // when bottom part of <nav> reaches screen top
+        start: "bottom top", // when bottom part of nav reaches screen top
       },
     });
-
+    // styles animation nav while scrolling
     navTween.fromTo(
       "nav",
       { backgroundColor: "transparent" },
