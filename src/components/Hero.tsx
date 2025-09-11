@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/all";
@@ -82,36 +81,6 @@ const Hero = () => {
     }
   }, []);
 
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-
-    // важно для старых iOS: добавить атрибут webkit-playsinline
-    v.setAttribute("webkit-playsinline", "true");
-
-    const prime = async () => {
-      try {
-        // из-за muted Safari разрешает programmatic play()
-        await v.play();
-        v.pause();
-        // микро-скачок, чтобы зафиксировать первый кадр
-        v.currentTime = 0.000001;
-      } catch {
-        // запасной путь: дождаться seek и закрепить кадр
-        const onLoadedData = () => {
-          v.currentTime = 0.000001;
-          v.removeEventListener("loadeddata", onLoadedData);
-        };
-        v.addEventListener("loadeddata", onLoadedData);
-      }
-    };
-
-    if (v.readyState >= 1) prime();
-    else v.addEventListener("loadedmetadata", prime, { once: true });
-
-    return () => v.removeEventListener("loadedmetadata", prime as any);
-  }, []);
-
   return (
     <>
       <section id="hero" className="noisy">
@@ -151,7 +120,7 @@ const Hero = () => {
           src="/videos/output.mp4"
           muted
           playsInline
-          preload="metadata"
+          preload="auto"
         />
       </div>
     </>
